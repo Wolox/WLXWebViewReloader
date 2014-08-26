@@ -1,0 +1,17 @@
+PODS:
+  - Kiwi (2.3.0)
+  - WLXWebViewReloader (0.1.0)
+
+DEPENDENCIES:
+  - Kiwi
+  - WLXWebViewReloader (from `../`)
+
+EXTERNAL SOURCES:
+  WLXWebViewReloader:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Kiwi: 54bece5b35564d9b8e03c608d926f1a22fcfc589
+  WLXWebViewReloader: 3bdd4fe7e3bd03e0b4cab194ca5ca3636cafac97
+
+COCOAPODS: 0.33.1

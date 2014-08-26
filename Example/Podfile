@@ -1,0 +1,9 @@
+target 'WLXWebViewReloader', :exclusive => true do
+  pod "WLXWebViewReloader", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "WLXWebViewReloader", :path => "../"
+
+  pod 'Kiwi'
+end

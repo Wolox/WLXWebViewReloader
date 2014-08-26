@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="socket.io.js"></script>
+    <script>
+      (function(){
+       
+      function callNative(message, data) {
+        try {
+          webkit.messageHandlers[message].postMessage(data);
+        } catch(err) {
+          console.log('The native context for message "' + message + '" does not exist yet');
+        }
+      }
+
+      window.connectWithWatcherServer = function(url) {
+        var socket = io(url);
+        socket.on('connect', function() { callNative('connectedHandler'); });
+        socket.on('connect_error', function() { callNative('connectionErrorHandler'); });
+        socket.on('src-change', function () { callNative('srcChangeHandler'); });
+      }
+
+      })();
+      
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
