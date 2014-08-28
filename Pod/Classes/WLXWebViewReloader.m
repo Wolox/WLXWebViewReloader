@@ -98,13 +98,17 @@ static NSURL * serverURL;
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation
       withError:(NSError *)error {
-    [self.delegate webViewReloader:self didFailToConnect:error];
+    if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
+        [self.delegate webViewReloader:self didFailToConnect:nil];
+    }
 }
 
 - (void)webView:(WKWebView *)webView
 didFailProvisionalNavigation:(WKNavigation *)navigation
       withError:(NSError *)error {
-    [self.delegate webViewReloader:self didFailToConnect:error];
+    if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
+        [self.delegate webViewReloader:self didFailToConnect:nil];
+    }
 }
 
 #pragma mark - Private Methods
@@ -150,20 +154,32 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
 }
 
 - (void)srcChangeHandler {
-    if (self.webView) {
+    if (!self.webView) {
+        return;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(webViewReloader:willReloadWebView:)]) {
         [self.delegate webViewReloader:self willReloadWebView:self.webView];
-        [self.webView reload];
+    }
+        
+    [self.webView reload];
+        
+    if ([self.delegate respondsToSelector:@selector(webViewReloader:willReloadWebView:)]) {
         [self.delegate webViewReloader:self didReloadWebView:self.webView];
     }
 }
 
 - (void)connectedHandler {
     self.connected = YES;
-    [self.delegate webViewReloaderDidConnect:self];
+    if ([self.delegate respondsToSelector:@selector(webViewReloaderDidConnect:)]) {
+        [self.delegate webViewReloaderDidConnect:self];
+    }
 }
 
 - (void)connectionErrorHandler {
-    [self.delegate webViewReloader:self didFailToConnect:nil];
+    if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
+        [self.delegate webViewReloader:self didFailToConnect:nil];
+    }
     self.connected = NO;
 }
 

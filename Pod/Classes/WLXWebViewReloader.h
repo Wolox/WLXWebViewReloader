@@ -14,12 +14,16 @@
 
 @protocol WLXWebViewReloaderDelegate <NSObject>
 
+@optional
 - (void)webViewReloader:(WLXWebViewReloader *)reloader didFailToConnect:(NSError *)error;
 
+@optional
 - (void)webViewReloaderDidConnect:(WLXWebViewReloader *)reloader;
 
+@optional
 - (void)webViewReloader:(WLXWebViewReloader *)reloader willReloadWebView:(WKWebView *)webView;
 
+@optional
 - (void)webViewReloader:(WLXWebViewReloader *)reloader didReloadWebView:(WKWebView *)webView;
 
 @end
