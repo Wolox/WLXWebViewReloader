@@ -60,7 +60,7 @@ and here is an example of how to configure the web view
 #ifdef DEBUG
     self.webView.reloaderIdentifier = @"MyWebView";
     self.webView.reloaderDelegate = self;
-    [self.webView reloadOnFileChangeThatMatches:@".*\\.html"];
+    [self.webView reloadOnFileChange];
 #endif
     
     NSURL * URL = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html"];

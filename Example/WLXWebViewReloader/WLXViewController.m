@@ -32,7 +32,7 @@
 #ifdef DEBUG
     self.webView.reloaderIdentifier = @"WebViewSource";
     self.webView.reloaderDelegate = self;
-    [self.webView reloadOnFileChangeThatMatches:@".*\\.html"];
+    [self.webView reloadOnFileChange];
 #endif
     
     NSURL * URL = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html" subdirectory:@"WebViewSource"];

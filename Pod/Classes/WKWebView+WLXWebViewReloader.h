@@ -20,8 +20,6 @@
 
 - (void)reloadOnFileChange;
 
-- (void)reloadOnFileChangeThatMatches:(NSString *)regexp;
-
 - (WKNavigation *)loadLocalRequest:(NSURLRequest *)request;
 
 - (void)startListeningToFileChanges;

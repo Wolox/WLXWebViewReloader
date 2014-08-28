@@ -19,10 +19,6 @@ static char kWebViewReloaderDelegateKey;
 @dynamic reloaderDelegate;
 
 - (void)reloadOnFileChange {
-    [self reloadOnFileChangeThatMatches:nil];
-}
-
-- (void)reloadOnFileChangeThatMatches:(NSString *)regexp {
     WLXWebViewReloader * reloader = [WLXWebViewReloader reloaderWithWebViewIdentifier:self.reloaderIdentifier];
     self.reloader = reloader;
     reloader.delegate = self.reloaderDelegate;
