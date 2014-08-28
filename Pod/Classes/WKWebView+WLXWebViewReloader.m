@@ -27,7 +27,12 @@ static char kWebViewReloaderDelegateKey;
 
 - (WKNavigation *)loadLocalRequest:(NSURLRequest *)request {
     if (self.reloader) {
-        request = [NSURLRequest requestWithURL:self.reloader.contentURL];
+        NSURLComponents * components = [NSURLComponents componentsWithString:[self.reloader.contentURL absoluteString]];
+        NSMutableArray * queryItems = [NSMutableArray arrayWithArray:components.queryItems];
+        [queryItems addObject:[NSURLQueryItem queryItemWithName:@"wvreloader" value:@"true"]];
+        [queryItems addObject:[NSURLQueryItem queryItemWithName:@"wvreloaderIdentifier" value:self.reloader.webViewIdentifier]];
+        components.queryItems = queryItems;
+        request = [NSURLRequest requestWithURL:components.URL];
     }
     return [self loadRequest:request];
 }
