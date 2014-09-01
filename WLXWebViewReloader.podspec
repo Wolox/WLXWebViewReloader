@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name             = "WLXWebViewReloader"
-  s.version          = "0.1.0"
+  s.version          = "1.0.0"
   s.summary          = "An extension to WKWebView that reloads the web view when the source changes."
   s.description      = <<-DESC
                        WLXWebViewReloader adds an extension to WKWebView to reload the web view
