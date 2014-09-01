@@ -1,14 +1,3 @@
-#
-# Be sure to run `pod lib lint WLXWebViewReloader.podspec' to ensure this is a
-# valid spec and remove all comments before submitting the spec.
-#
-# Any lines starting with a # are optional, but encouraged
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-require 'pathname'
-require 'xcodeproj'
-
 Pod::Spec.new do |s|
 
   s.name             = "WLXWebViewReloader"
@@ -36,6 +25,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
+  s.framework = 'WebKit'
   s.source_files = 'Pod/Classes'
   s.resource_bundles = {
     'WLXWebViewReloader' => ['Pod/Assets/*.png', 'Pod/Assets/*.html', 'Pod/Assets/*.js']
