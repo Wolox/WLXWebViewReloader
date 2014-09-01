@@ -12,6 +12,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Kiwi: 54bece5b35564d9b8e03c608d926f1a22fcfc589
-  WLXWebViewReloader: 3bdd4fe7e3bd03e0b4cab194ca5ca3636cafac97
+  WLXWebViewReloader: ea2fc2f82591dd23a880e163fbe878fec22659df
 
 COCOAPODS: 0.33.1

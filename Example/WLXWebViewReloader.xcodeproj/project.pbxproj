@@ -22,6 +22,7 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
+		9D4ECB7819AE760A00443B89 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D4ECB7719AE760A00443B89 /* WebKit.framework */; };
 		9D9AB7E619AD205A002B30E2 /* WebViewSource in Resources */ = {isa = PBXBuildFile; fileRef = 9D9AB7E519AD205A002B30E2 /* WebViewSource */; };
 		D4F422C835234802B4B0D5E3 /* libPods-WLXWebViewReloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C074814D8F04805ADFF44E8 /* libPods-WLXWebViewReloader.a */; };
 		E6A0C03E94624C6CA739A484 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E2300CF8C9B4F5E8AED965C /* libPods-Tests.a */; };
@@ -64,6 +65,7 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		64A10AEE206042DE89ABC956 /* WLXWebViewReloader.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WLXWebViewReloader.podspec; path = ../WLXWebViewReloader.podspec; sourceTree = "<group>"; };
+		9D4ECB7719AE760A00443B89 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9D9AB7E519AD205A002B30E2 /* WebViewSource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WebViewSource; sourceTree = "<group>"; };
 		B6FC93AC2BD14A98913B1451 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		D81179F484E645289D51008E /* Pods-WLXWebViewReloader.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WLXWebViewReloader.xcconfig"; path = "Pods/Pods-WLXWebViewReloader.xcconfig"; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D4ECB7819AE760A00443B89 /* WebKit.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
@@ -120,6 +123,7 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9D4ECB7719AE760A00443B89 /* WebKit.framework */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
