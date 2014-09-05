@@ -32,7 +32,7 @@
 
 @property (nonatomic, readonly) NSString * webViewIdentifier;
 @property (nonatomic, weak) WKWebView * webView;
-@property (nonatomic, readonly) NSURL * serverURL;
+@property (nonatomic) NSURL * serverURL;
 @property (nonatomic, weak) id<WLXWebViewReloaderDelegate> delegate;
 @property (nonatomic, readonly) NSURL * notifierURL;
 @property (nonatomic, readonly) NSURL * contentURL;

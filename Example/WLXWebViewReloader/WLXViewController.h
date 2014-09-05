@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface WLXViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIView *webViewContainer;
+@property (weak, nonatomic) IBOutlet UITextField *serverAddressTextField;
+@property (weak, nonatomic) IBOutlet UISwitch *useReloaderSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *connectButton;
+- (IBAction)connectButtonPressed:(id)sender;
 
 @end

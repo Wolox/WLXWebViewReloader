@@ -23,35 +23,32 @@
 - (void)loadView {
     [super loadView];
     self.webView = [[WKWebView alloc] init];
-    self.view = self.webView;
+    self.webView.frame = CGRectMake(0, 0, self.webViewContainer.frame.size.width, self.webViewContainer.frame.size.height);
+    [self.webViewContainer addSubview:self.webView];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-#ifdef DEBUG
-    self.webView.reloaderIdentifier = @"WebViewSource";
-    self.webView.reloaderDelegate = self;
-    [self.webView reloadOnFileChange];
-#endif
-    
-    NSURL * URL = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html" subdirectory:@"WebViewSource"];
-    NSURLRequest * request = [NSURLRequest requestWithURL:URL];
-    self.webView.navigationDelegate = self;
-    [self.webView loadLocalRequest:request];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [self.webView startListeningToFileChanges];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [self.webView stopListeningToFileChanges];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)connectButtonPressed:(id)sender {
+    if (self.useReloaderSwitch.on) {
+        [WLXWebViewReloader setDefaultServerURL:[NSURL URLWithString:self.serverAddressTextField.text]];
+        self.webView.reloaderIdentifier = @"WebViewSource";
+        self.webView.reloaderDelegate = self;
+        [self.webView reloadOnFileChange];
+        [self.webView startListeningToFileChanges];
+    }
+    
+    NSURL * URL = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html" subdirectory:@"WebViewSource"];
+    NSURLRequest * request = [NSURLRequest requestWithURL:URL];
+    self.webView.navigationDelegate = self;
+    [self.webView loadLocalRequest:request];
 }
 
 #pragma mark - WKNavigationDelegate methods
@@ -69,7 +66,7 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
 
 - (void)webView:(WKWebView *)webView
 didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"Finish navigation %@", navigation);
+    NSLog(@"Finish navigation %@", navigation.request.URL);
 }
 
 #pragma mark - WLXWebViewReloaderDelegate methods

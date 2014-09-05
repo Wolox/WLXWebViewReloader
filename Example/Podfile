@@ -1,5 +1,6 @@
 target 'WLXWebViewReloader', :exclusive => true do
   pod "WLXWebViewReloader", :path => "../"
+  pod "GCDWebServer"
 end
 
 target 'Tests', :exclusive => true do

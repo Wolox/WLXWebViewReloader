@@ -7,6 +7,7 @@
 //
 
 #import "WLXWebViewReloader.h"
+#import <GCDWebServer/GCDWebServer.h>
 
 static NSString * const kSrcChangeHandlerName = @"srcChangeHandler";
 
@@ -22,10 +23,14 @@ static NSURL * serverURL;
 
 @property (nonatomic) WKWebView * socketIOWebView;
 @property (nonatomic, getter=isConnected) BOOL connected;
+@property (nonatomic) GCDWebServer * server;
 
 @end
 
 @implementation WLXWebViewReloader
+
+@dynamic contentURL;
+@dynamic notifierURL;
 
 + (void)initialize {
     NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
@@ -58,11 +63,17 @@ static NSURL * serverURL;
         _serverURL = URL;
         _webView = webView;
         _webViewIdentifier = webViewIdentifier;
-        _notifierURL = [self.serverURL URLByAppendingPathComponent:_webViewIdentifier];
-        _contentURL = [_notifierURL URLByAppendingPathComponent:@""];
         _connected = NO;
     }
     return self;
+}
+
+- (NSURL *)notifierURL {
+    return [self.serverURL URLByAppendingPathComponent:_webViewIdentifier];
+}
+
+- (NSURL *)contentURL {
+    return [self.notifierURL URLByAppendingPathComponent:@""];
 }
 
 - (void)connect {
@@ -147,10 +158,19 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
 - (void)loadSocketIOWebView {
     NSString * bundlePath = [[NSBundle bundleForClass:[WLXWebViewReloader class]] pathForResource:@"WLXWebViewReloader"
                                                                                            ofType:@"bundle"];
-    NSBundle * bundle = [NSBundle bundleWithPath:bundlePath];
-    NSURL * URL = [bundle URLForResource:@"index" withExtension:@"html"];
-    NSURLRequest * request = [NSURLRequest requestWithURL:URL];
-    [self.socketIOWebView loadRequest:request];
+    self.server = [[GCDWebServer alloc] init];
+    [self.server addGETHandlerForBasePath:@"/"
+                            directoryPath:bundlePath
+                            indexFilename:@"index.html"
+                                cacheAge:3600
+                        allowRangeRequests:YES];
+    if ([self.server startWithPort:4041 bonjourName:nil]) {
+        NSURL * URL = [NSURL URLWithString:@"http://localhost:4041"];
+        NSURLRequest * request = [NSURLRequest requestWithURL:URL];
+        [self.socketIOWebView loadRequest:request];
+    } else if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
+        [self.delegate webViewReloader:self didFailToConnect:nil];
+    }
 }
 
 - (void)srcChangeHandler {
