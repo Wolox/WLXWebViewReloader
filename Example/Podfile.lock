@@ -1,7 +1,7 @@
 PODS:
-  - GCDWebServer (2.5.1):
+  - GCDWebServer (2.5.2):
     - GCDWebServer/Core
-  - GCDWebServer/Core (2.5.1)
+  - GCDWebServer/Core (2.5.2)
   - Kiwi (2.3.0)
   - WLXWebViewReloader (1.0.1)
 
@@ -15,8 +15,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  GCDWebServer: 03bc7cee06c2661c2e5615f2a924dfac0185a572
+  GCDWebServer: 53c52f370be70c6b4292c5f41ba9e9f0ed3790cc
   Kiwi: 54bece5b35564d9b8e03c608d926f1a22fcfc589
   WLXWebViewReloader: e2f4509d77dd932d8bd5ef036adc36ff019f5870
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.1
