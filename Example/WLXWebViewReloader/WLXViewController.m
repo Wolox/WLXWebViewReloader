@@ -66,7 +66,7 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
 
 - (void)webView:(WKWebView *)webView
 didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"Finish navigation %@", navigation.request.URL);
+    NSLog(@"Finish navigation");
 }
 
 #pragma mark - WLXWebViewReloaderDelegate methods
