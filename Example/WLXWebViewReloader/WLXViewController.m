@@ -29,6 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.serverAddressTextField.text = [self serverAddress];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,6 +45,7 @@
         [self.webView reloadOnFileChange];
         [self.webView startListeningToFileChanges];
     }
+    [self saveServerAddress:self.serverAddressTextField.text];
     
     NSURL * URL = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html" subdirectory:@"WebViewSource"];
     NSURLRequest * request = [NSURLRequest requestWithURL:URL];
@@ -85,6 +87,22 @@ didFinishNavigation:(WKNavigation *)navigation {
 
 - (void)webViewReloader:(WLXWebViewReloader *)reloader didReloadWebView:(WKWebView *)webView {
     NSLog(@"Web view reloaded!");
+}
+
+#pragma mark - Private methods
+
+- (NSString *)serverAddress {
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString * serverAddress = [userDefaults objectForKey:@"ServerAddress"];
+    if (serverAddress == nil) {
+        serverAddress = @"http://localhost:4040";
+    }
+    return serverAddress;
+}
+
+- (void)saveServerAddress:(NSString *)serverAddress {
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:serverAddress forKey:@"ServerAddress"];
 }
 
 @end
