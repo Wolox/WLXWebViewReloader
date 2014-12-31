@@ -7,13 +7,14 @@
 //
 
 #import "WLXWebViewReloader.h"
-#import <GCDWebServer/GCDWebServer.h>
 
 static NSString * const kSrcChangeHandlerName = @"srcChangeHandler";
 
 static NSString * const kConnectedHandlerName = @"connectedHandler";
 
 static NSString * const kConnectionErrorHandlerName = @"connectionErrorHandler";
+
+static NSString * const kLoggerHandlerName = @"loggerHandler";
 
 static NSString * const kPListKey = @"WLXWebViewReloader";
 
@@ -23,7 +24,7 @@ static NSURL * serverURL;
 
 @property (nonatomic) WKWebView * socketIOWebView;
 @property (nonatomic, getter=isConnected) BOOL connected;
-@property (nonatomic) GCDWebServer * server;
+@property (nonatomic, readonly) NSURL * socketIOWebViewURL;
 
 @end
 
@@ -68,6 +69,15 @@ static NSURL * serverURL;
     return self;
 }
 
+- (NSURL *)socketIOWebViewURL {
+    NSString * query = [NSString stringWithFormat:@"?host=webview&identifier=%@", self.webViewIdentifier];
+#ifdef DEBUG
+    query = [query stringByAppendingString:@"&debugMode=true"];
+#endif
+    NSString * stringURL = [self.serverURL.absoluteString stringByAppendingString:query];
+    return [NSURL URLWithString:stringURL];
+}
+
 - (NSURL *)notifierURL {
     return [self.serverURL URLByAppendingPathComponent:_webViewIdentifier];
 }
@@ -103,6 +113,9 @@ static NSURL * serverURL;
     if ([message.name isEqualToString:kConnectionErrorHandlerName]) {
         [self connectionErrorHandler];
     }
+    if ([message.name isEqualToString:kLoggerHandlerName]) {
+        [self loggerHandler:message.body];
+    }
 }
 
 #pragma mark - WKNavigationDelegate delegate methods
@@ -112,6 +125,7 @@ static NSURL * serverURL;
     if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
         [self.delegate webViewReloader:self didFailToConnect:nil];
     }
+    [self loggerHandler:[NSString stringWithFormat:@"error: %@", error]];
 }
 
 - (void)webView:(WKWebView *)webView
@@ -120,6 +134,15 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
     if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
         [self.delegate webViewReloader:self didFailToConnect:nil];
     }
+    [self loggerHandler:[NSString stringWithFormat:@"error: %@", error]];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self loggerHandler:@"finish navigation"];
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    [self loggerHandler:@"start provisional navigation"];
 }
 
 #pragma mark - Private Methods
@@ -136,16 +159,13 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
 }
 
 - (WKWebView *)newSocketIOWebView {
-    NSString * source = [NSString stringWithFormat:@"connectWithWatcherServer('%@')", self.notifierURL];
-    WKUserScript * userScript = [[WKUserScript alloc] initWithSource:source
-                                                       injectionTime:WKUserScriptInjectionTimeAtDocumentEnd
-                                                    forMainFrameOnly:YES];
-    
     WKUserContentController * contentController = [[WKUserContentController alloc] init];
-    [contentController addUserScript:userScript];
     [contentController addScriptMessageHandler:self name:kSrcChangeHandlerName];
     [contentController addScriptMessageHandler:self name:kConnectedHandlerName];
     [contentController addScriptMessageHandler:self name:kConnectionErrorHandlerName];
+#ifdef DEBUG
+    [contentController addScriptMessageHandler:self name:kLoggerHandlerName];
+#endif
     
     WKWebViewConfiguration * config = [[WKWebViewConfiguration alloc] init];
     config.userContentController = contentController;
@@ -156,21 +176,8 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
 }
 
 - (void)loadSocketIOWebView {
-    NSString * bundlePath = [[NSBundle bundleForClass:[WLXWebViewReloader class]] pathForResource:@"WLXWebViewReloader"
-                                                                                           ofType:@"bundle"];
-    self.server = [[GCDWebServer alloc] init];
-    [self.server addGETHandlerForBasePath:@"/"
-                            directoryPath:bundlePath
-                            indexFilename:@"index.html"
-                                cacheAge:3600
-                        allowRangeRequests:YES];
-    if ([self.server startWithPort:4041 bonjourName:nil]) {
-        NSURL * URL = [NSURL URLWithString:@"http://localhost:4041"];
-        NSURLRequest * request = [NSURLRequest requestWithURL:URL];
-        [self.socketIOWebView loadRequest:request];
-    } else if ([self.delegate respondsToSelector:@selector(webViewReloader:didFailToConnect:)]) {
-        [self.delegate webViewReloader:self didFailToConnect:nil];
-    }
+    NSURLRequest * request = [NSURLRequest requestWithURL:self.socketIOWebViewURL];
+    [self.socketIOWebView loadRequest:request];
 }
 
 - (void)srcChangeHandler {
@@ -201,6 +208,12 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
         [self.delegate webViewReloader:self didFailToConnect:nil];
     }
     self.connected = NO;
+}
+
+- (void)loggerHandler:(NSString *)message {
+#ifdef DEBUG
+    NSLog(@"SocketIOWebView: %@", message);
+#endif
 }
 
 @end
