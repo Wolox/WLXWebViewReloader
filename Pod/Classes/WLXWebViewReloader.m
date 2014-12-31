@@ -175,7 +175,15 @@ didFailProvisionalNavigation:(WKNavigation *)navigation
     return webView;
 }
 
+- (void)attachSocketIOWebView {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat x = - (2 * screenRect.size.width + self.socketIOWebView.frame.size.width);
+    self.socketIOWebView.frame = CGRectMake(x, 0, self.socketIOWebView.bounds.size.width, self.socketIOWebView.bounds.size.height);
+    [self.webView.superview addSubview:self.socketIOWebView];
+}
+
 - (void)loadSocketIOWebView {
+    [self attachSocketIOWebView];
     NSURLRequest * request = [NSURLRequest requestWithURL:self.socketIOWebViewURL];
     [self.socketIOWebView loadRequest:request];
 }
